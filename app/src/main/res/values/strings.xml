@@ -1,12 +1,13 @@
 <resources>
     <string name="app_name">CiRestoIo</string>
-    <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <string name="name">Ci R€sto Io</string>
+    <string name="foto">Apri fotocamera</string>
+    <string name="stat1">Banconote rilevate: </string>
+    <string name="stat2">Tagli rilevati: </string>
+    <string name="stat3">Inserire l\'importo da pagare: </string>
+    <string name="stat4">Importo rilevato: </string>
+    <string name="calcola">Calcola</string>
+    <string name="home">Torna alla home</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
 </resources>
