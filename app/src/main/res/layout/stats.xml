@@ -44,7 +44,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/white"
-                android:inputType="none"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:text="" />
         </LinearLayout>
 
@@ -67,7 +70,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/white"
-                android:inputType="none"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:text="" />
         </LinearLayout>
 
@@ -90,7 +96,10 @@
                 android:layout_height="170dp"
                 android:layout_weight="1"
                 android:textColor="@color/white"
-                android:inputType="none"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:text="" />
         </LinearLayout>
 
@@ -135,8 +144,11 @@
             android:id="@+id/response"
             android:layout_width="match_parent"
             android:layout_height="130dp"
-            android:inputType="none"
             android:textColor="@color/white"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:text="" />
 
     </LinearLayout>

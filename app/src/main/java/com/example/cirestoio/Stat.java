@@ -20,16 +20,7 @@ import java.util.List;
 public class Stat extends AppCompatActivity implements View.OnClickListener  {
 
     static  String tagliToString[]= {"5 €", "10 €", "20 €", "50 €", "100 €"};
-    //static  double tagliToDouble[]= {5.0, 10.0, 20.0, 50.0, 100.0};
-
-    /*classifica.put(1, "Juventus");
-    classifica.put(2, "Napoli");
-    classifica.put(3, "Roma");
-    classifica.put(4, "Inter");
-    for(Integer key : classifica.keySet()) {
-        System.out.println(classifica.get(key));
-    }*/
-
+    static int NUM_INDEX=5; // NUMERO DI TAGLI
 
     ImageView iv;
     Button calcola;
@@ -73,19 +64,23 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
         try {
             imp = Double.parseDouble(importoStr);
         }catch (Exception e) {
-            System.out.println("ERRORE!!!!!");
+            //System.out.println("ERRORE!!!!!");
             response.setText("Inserire un importo corretto");
             return ;
         }
+        if (imp < 0){
+            response.setText("Inserire un importo corretto");
+            return;
+        }
 
-        double tot;
+        String tot;
         if(somma > imp) {
-            tot=somma-imp;
+            tot=String.format("%.02f", somma-imp);
             response.setText("Il resto ammonta a "+ tot + " €");
         } else if (somma == imp){
             response.setText("La somma fotografata coincide con l'importo da pagare");
         } else {
-            tot=imp-somma;
+            tot=String.format("%.02f", imp-somma);
             response.setText("Per raggiungere l'importo indicato mancano ancora  "+ tot+ " €");
         }
 
@@ -94,17 +89,17 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
     private Double getBanknoteDoubleVal(String label) {
         switch (label) {
             case "5euro":
-                return 5.0;
+                return 5.00;
             case "10euro":
-                return 10.0;
+                return 10.00;
             case "20euro":
-                return 20.0;
+                return 20.00;
             case "50euro":
-                return 50.0;
+                return 50.00;
             case "100euro":
-                return 100.0;
+                return 100.00;
             default:
-                return 0.0;
+                return 0.00;
         }
     }
 
@@ -130,7 +125,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
         TensorImage image = TensorImage.fromBitmap(bitmap) ;
         // Imposto l'object detector creando prima le opzioni e poi passandole all'object detector
         ObjectDetector.ObjectDetectorOptions options = ObjectDetector.ObjectDetectorOptions.builder().setMaxResults(5).setScoreThreshold(0.5f).build() ;
-        ObjectDetector detector = ObjectDetector.createFromFileAndOptions(this, "banconote_pascal.tflite",options) ;
+        ObjectDetector detector = ObjectDetector.createFromFileAndOptions(this, "banconote_pascal3.tflite",options) ;
         // Do l'immagine in pasto al detector e recupero i risultati
         List<Detection> results = detector.detect(image);
 
@@ -146,8 +141,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
         for (Detection obj : results) {
             Category category = obj.getCategories().get(0);
             String text = ""+category.getLabel()+", "+ category.getScore()+"\n";
-            System.out.println("--------ALGISE-----------------");
-            System.out.println(text);
+
         }
         //debugPrint(results); // solo per debug
         analyzeResults(results);
@@ -182,18 +176,16 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
         }
         //Aggiorno i campi
         numBanconote.setText(""+results.size());
-        sommaText.setText(""+somma+" €");
+        sommaText.setText(""+String.format("%.02f",somma)+" €");
         tagli.setText("");
-        if(banconoteTrovate[0]>0)
-            tagli.append(" Trovate "+banconoteTrovate[0]+" banconote da "+tagliToString[0]+"\n");
-        if(banconoteTrovate[1]>0)
-            tagli.append(" Trovate "+banconoteTrovate[1]+" banconote da "+tagliToString[1]+"\n");
-        if (banconoteTrovate[2]>0)
-            tagli.append(" Trovate "+banconoteTrovate[2]+" banconote da "+tagliToString[2]+"\n");
-        if (banconoteTrovate[3]>0)
-            tagli.append(" Trovate "+banconoteTrovate[3]+" banconote da "+tagliToString[3]+"\n");
-        if (banconoteTrovate[4]>0)
-            tagli.append(" Trovate "+banconoteTrovate[4]+" banconote da "+tagliToString[4]+"\n");
+        for (int i=0; i<NUM_INDEX; i++){
+            if(banconoteTrovate[i]>0) {
+                if (banconoteTrovate[i] == 1)
+                    tagli.append("Trovata " + banconoteTrovate[i] + " banconota da " + tagliToString[i] + "\n");
+                else
+                    tagli.append("Trovate " + banconoteTrovate[i] + " banconote da " + tagliToString[i] + "\n");
+            }
+        }
 
 
     }
