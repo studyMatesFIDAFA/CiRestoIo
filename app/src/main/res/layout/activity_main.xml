@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context=".MainActivity">
+
+    //app:srcCompat="@mipmap/ic_emotion"
 
     <TextView
         android:id="@+id/textView"
@@ -12,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="@string/name"
         android:textAllCaps="false"
-        android:textColor="#2B2B2B"
+        android:textColor="@color/yellow"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,16 +23,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.499" />
 
-    //app:srcCompat="@mipmap/ic_emotion"
-
     <Button
         android:id="@+id/openCamera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:background="#FFFFFF"
+        android:background="@color/yellow"
+        android:foregroundTint="@color/black"
+        android:textColor="@color/black"
         android:text="@string/foto"
+        android:textColorLink="@color/black"
         app:icon="@android:drawable/ic_menu_camera"
+        app:iconTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,6 +46,7 @@
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="138dp"
         tools:layout_editor_absoluteY="187dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        tools:ignore="MissingConstraints"/> <!-- ATTENZIONE, sistemare in altro modo -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
