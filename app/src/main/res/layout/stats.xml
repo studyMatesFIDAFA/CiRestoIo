@@ -114,11 +114,12 @@
 
                 <EditText
                     android:id="@+id/importo"
-                    android:layout_width="84dp"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="@color/white"
-                    android:text="" />
+                    android:backgroundTint="@color/yellow"
+                    android:text=""
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <Button

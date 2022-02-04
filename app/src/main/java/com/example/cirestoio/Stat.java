@@ -14,12 +14,21 @@ import org.tensorflow.lite.task.vision.detector.Detection;
 import org.tensorflow.lite.task.vision.detector.ObjectDetector;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 public class Stat extends AppCompatActivity implements View.OnClickListener  {
 
     static  String tagliToString[]= {"5 €", "10 €", "20 €", "50 €", "100 €"};
-    static  double tagliToDouble[]= {5.0, 10.0, 20.0, 50.0, 100.0};
+    //static  double tagliToDouble[]= {5.0, 10.0, 20.0, 50.0, 100.0};
+
+    /*classifica.put(1, "Juventus");
+    classifica.put(2, "Napoli");
+    classifica.put(3, "Roma");
+    classifica.put(4, "Inter");
+    for(Integer key : classifica.keySet()) {
+        System.out.println(classifica.get(key));
+    }*/
 
 
     ImageView iv;
@@ -43,6 +52,8 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
         tagli = findViewById(R.id.listaTagli);
         importo = findViewById(R.id.importo);
         response = findViewById(R.id.response);
+        sommaText = findViewById(R.id.sommaText);
+        calcola.setOnClickListener(this);
 
         // Set image on ImageView
         Bitmap captureImage = (Bitmap) getIntent().getExtras().get("img");
@@ -62,6 +73,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
         try {
             imp = Double.parseDouble(importoStr);
         }catch (Exception e) {
+            System.out.println("ERRORE!!!!!");
             response.setText("Inserire un importo corretto");
             return ;
         }
@@ -77,6 +89,40 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
             response.setText("Per raggiungere l'importo indicato mancano ancora  "+ tot+ " €");
         }
 
+    }
+
+    private Double getBanknoteDoubleVal(String label) {
+        switch (label) {
+            case "5euro":
+                return 5.0;
+            case "10euro":
+                return 10.0;
+            case "20euro":
+                return 20.0;
+            case "50euro":
+                return 50.0;
+            case "100euro":
+                return 100.0;
+            default:
+                return 0.0;
+        }
+    }
+
+    private int getBanknoteIndex(String label) {
+        switch (label) {
+            case "5euro":
+                return 0;
+            case "10euro":
+                return 1;
+            case "20euro":
+                return 2;
+            case "50euro":
+                return 3;
+            case "100euro":
+                return 4;
+            default:
+                return -1;
+        }
     }
 
     protected void runObjectDetection(Bitmap bitmap) throws  IOException {
@@ -104,10 +150,10 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
             System.out.println(text);
         }
         //debugPrint(results); // solo per debug
-        //analyzeResults(results);
+        analyzeResults(results);
     }
 
-    /*private void debugPrint(List<Detection> results) {
+    private void debugPrint(List<Detection> results) {
         for (Detection obj : results){
             for (int j=0;j<obj.getCategories().size();j++) {
                 Category cat = obj.getCategories().get(j);
@@ -120,23 +166,36 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
     }
 
     private void analyzeResults(List<Detection> results) {
+        System.out.println("ANALYZE RESULTS");
         int[] banconoteTrovate =new int[5];
         somma = 0 ; // altrimenti aggiungo alle analisi di foto precedenti
         for (Detection obj : results) {
-            int label = Integer.parseInt(obj.getCategories().get(0).getLabel()); // label = {0,1,2,3,4}
-            somma += tagliToDouble[label]; // incremento la somma totale dei contanti mostrati nell'immagine
-            banconoteTrovate[label]++;  // incremento banconote trovate per quella label
+            String label = obj.getCategories().get(0).getLabel(); // label = {5euro,10euro,20euro,50euro,100euro}
+            Double doubleVal = getBanknoteDoubleVal(label);
+            System.out.println("Val Double "+doubleVal);
+            somma += doubleVal; // incremento la somma totale dei contanti mostrati nell'immagine
+            int index = getBanknoteIndex(label);
+            if(index!=-1)
+                banconoteTrovate[index]++;  // incremento banconote trovate per quella label
+            else
+                System.out.println("----------------Errore index--------------------");
         }
         //Aggiorno i campi
         numBanconote.setText(""+results.size());
-        sommaText.setText(""+somma);
-        tagli.setText(" Trovate "+banconoteTrovate[0]+" da "+tagliToString[0]+"\n");
-        tagli.setText(" Trovate "+banconoteTrovate[1]+" da "+tagliToString[1]+"\n");
-        tagli.setText(" Trovate "+banconoteTrovate[2]+" da "+tagliToString[2]+"\n");
-        tagli.setText(" Trovate "+banconoteTrovate[3]+" da "+tagliToString[3]+"\n");
-        tagli.setText(" Trovate "+banconoteTrovate[4]+" da "+tagliToString[4]+"\n");
+        sommaText.setText(""+somma+" €");
+        tagli.setText("");
+        if(banconoteTrovate[0]>0)
+            tagli.append(" Trovate "+banconoteTrovate[0]+" banconote da "+tagliToString[0]+"\n");
+        if(banconoteTrovate[1]>0)
+            tagli.append(" Trovate "+banconoteTrovate[1]+" banconote da "+tagliToString[1]+"\n");
+        if (banconoteTrovate[2]>0)
+            tagli.append(" Trovate "+banconoteTrovate[2]+" banconote da "+tagliToString[2]+"\n");
+        if (banconoteTrovate[3]>0)
+            tagli.append(" Trovate "+banconoteTrovate[3]+" banconote da "+tagliToString[3]+"\n");
+        if (banconoteTrovate[4]>0)
+            tagli.append(" Trovate "+banconoteTrovate[4]+" banconote da "+tagliToString[4]+"\n");
 
 
-    }*/
+    }
 
 }
