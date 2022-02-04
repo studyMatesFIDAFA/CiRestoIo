@@ -58,7 +58,14 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
     public void onClick(View view) {
         // Calcola resto
         String importoStr = importo.getText().toString();
-        double imp = Double.parseDouble(importoStr);
+        double imp = 0;
+        try {
+            imp = Double.parseDouble(importoStr);
+        }catch (Exception e) {
+            response.setText("Inserire un importo corretto");
+            return ;
+        }
+
         double tot;
         if(somma > imp) {
             tot=somma-imp;
