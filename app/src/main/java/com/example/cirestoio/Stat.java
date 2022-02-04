@@ -77,16 +77,30 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
         TensorImage image = TensorImage.fromBitmap(bitmap) ;
         // Imposto l'object detector creando prima le opzioni e poi passandole all'object detector
         ObjectDetector.ObjectDetectorOptions options = ObjectDetector.ObjectDetectorOptions.builder().setMaxResults(5).setScoreThreshold(0.5f).build() ;
-        ObjectDetector detector = ObjectDetector.createFromFileAndOptions(this, "yolov5s-fp16.tflite",options) ;
+        ObjectDetector detector = ObjectDetector.createFromFileAndOptions(this, "banconote_pascal.tflite",options) ;
         // Do l'immagine in pasto al detector e recupero i risultati
         List<Detection> results = detector.detect(image);
-        debugPrint(results); // solo per debug
-        analyzeResults(results);
 
+        /*val resultToDisplay = results.map {
+            // Get the top-1 category and craft the display text
+            val category = it.categories.first()
+            val text = "${category.label}, ${category.score.times(100).toInt()}%"
 
+            // Create a data object to display the detection result
+            DetectionResult(it.boundingBox, text)
+        }*/
+
+        for (Detection obj : results) {
+            Category category = obj.getCategories().get(0);
+            String text = ""+category.getLabel()+", "+ category.getScore()+"\n";
+            System.out.println("--------ALGISE-----------------");
+            System.out.println(text);
+        }
+        //debugPrint(results); // solo per debug
+        //analyzeResults(results);
     }
 
-    private void debugPrint(List<Detection> results) {
+    /*private void debugPrint(List<Detection> results) {
         for (Detection obj : results){
             for (int j=0;j<obj.getCategories().size();j++) {
                 Category cat = obj.getCategories().get(j);
@@ -116,6 +130,6 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
         tagli.setText(" Trovate "+banconoteTrovate[4]+" da "+tagliToString[4]+"\n");
 
 
-    }
+    }*/
 
 }
