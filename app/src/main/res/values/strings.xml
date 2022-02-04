@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">CiRestoIo</string>
-    <string name="name">Ci R€sto Io</string>
+    <string name="desc">Apri la fotocamera e fotografa le banconote</string>
     <string name="foto">Apri fotocamera</string>
     <string name="stat1">Banconote rilevate: </string>
     <string name="stat2">Tagli rilevati: </string>
