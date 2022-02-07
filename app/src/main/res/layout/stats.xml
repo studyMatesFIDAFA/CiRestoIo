@@ -9,8 +9,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="681dp"
+        android:layout_width="389dp"
+        android:layout_height="698dp"
         android:layout_marginStart="11dp"
         android:layout_marginEnd="11dp"
         android:layout_marginBottom="10dp"
@@ -22,7 +22,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="172dp"
+            android:layout_height="270dp"
             tools:srcCompat="@tools:sample/avatars" />
 
         <LinearLayout
@@ -35,20 +35,20 @@
                 android:layout_width="11dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/yellow"
-                android:text="@string/stat4" />
+                android:text="@string/stat4"
+                android:textColor="@color/yellow" />
 
             <EditText
                 android:id="@+id/sommaText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/white"
                 android:clickable="false"
                 android:cursorVisible="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:text="" />
+                android:text=""
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -61,46 +61,46 @@
                 android:layout_width="10dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/yellow"
-                android:text="@string/stat1" />
+                android:text="@string/stat1"
+                android:textColor="@color/yellow" />
 
             <EditText
                 android:id="@+id/numBanconote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/white"
                 android:clickable="false"
                 android:cursorVisible="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:text="" />
+                android:text=""
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="147dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
-                android:layout_height="37dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/yellow"
-                android:text="@string/stat2" />
+                android:text="@string/stat2"
+                android:textColor="@color/yellow" />
 
             <EditText
                 android:id="@+id/listaTagli"
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
+                android:layout_height="101dp"
                 android:layout_weight="1"
-                android:textColor="@color/white"
                 android:clickable="false"
                 android:cursorVisible="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:text="" />
+                android:text=""
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -118,14 +118,16 @@
                     android:layout_width="151dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="@color/yellow"
-                    android:text="@string/stat3" />
+                    android:text="@string/stat3"
+                    android:textColor="@color/yellow" />
 
                 <EditText
                     android:id="@+id/importo"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:maxLines="1"
+                    android:lines="1"
                     android:backgroundTint="@color/yellow"
                     android:text=""
                     android:textColor="@color/white" />
@@ -136,20 +138,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/black"
-                android:text="@string/calcola" />
+                android:text="@string/calcola"
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <EditText
             android:id="@+id/response"
             android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:textColor="@color/white"
+            android:layout_height="90dp"
             android:clickable="false"
             android:cursorVisible="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/white" />
 
     </LinearLayout>
 

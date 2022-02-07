@@ -1,11 +1,12 @@
 package com.example.cirestoio;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 
 import android.Manifest;
 import android.app.Activity;
@@ -19,9 +20,25 @@ import android.widget.Button;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int CAMERA_PERMISSION_REQUEST = 100;
     Button openCamera;
+
+    ActivityResultLauncher<Intent> startForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    System.out.println("ALGISE");
+                    if (result != null && result.getResultCode() == RESULT_OK  && result.getData() != null) {
+                        //Get image capture
+                        System.out.println("OK");
+                        Bitmap captureImage = (Bitmap) result.getData().getExtras().get("data");
+                        Intent intent = new Intent(MainActivity.this, Stat.class);
+                        intent.putExtra("img", captureImage);
+                        startActivity(intent);
+                    }
+                    System.out.println("ALGISE 2");
+                }
+    });
 
 
     @Override
@@ -41,46 +58,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             //i permessi per l'uso della camera non sono stati concessi, quindi bisogna richiederli
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
-            return true;
         }
-        //in questo caso i permessi per la camera sono già stati dati, per cui è possibile procedere a lavorare con la camera
+        // a questo punto i permessi per la camera sono già stati concessi, per cui è possibile procedere ad operare
         return true;
 
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case CAMERA_PERMISSION_REQUEST: {
-                if (!(grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    //OK!
-                    //open camera
-                } else {
-                    //NON OK
-                }
-                break;
-            }
-        }
     }
 
     @Override
     public void onClick(View view) {
         // Open camera
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        startForResult.launch(takePictureIntent);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && data != null) {
-            //Get image capture
-            Bitmap captureImage = (Bitmap) data.getExtras().get("data");
-            Intent intent = new Intent(this, Stat.class);
-            intent.putExtra("img", captureImage);
-            startActivity(intent);
-        }
-    }
 }

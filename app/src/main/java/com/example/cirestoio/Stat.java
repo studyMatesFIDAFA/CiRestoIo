@@ -14,7 +14,6 @@ import org.tensorflow.lite.task.vision.detector.Detection;
 import org.tensorflow.lite.task.vision.detector.ObjectDetector;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 public class Stat extends AppCompatActivity implements View.OnClickListener  {
@@ -37,6 +36,8 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stats);
+
+        //BINDING
         iv = findViewById(R.id.imageView);
         calcola = findViewById(R.id.CalcolaResto);
         numBanconote = findViewById(R.id.numBanconote);
@@ -64,7 +65,6 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
         try {
             imp = Double.parseDouble(importoStr);
         }catch (Exception e) {
-            //System.out.println("ERRORE!!!!!");
             response.setText("Inserire un importo corretto");
             return ;
         }
@@ -124,49 +124,26 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
         //Converte l'immagine da Bitmap a TensorImage
         TensorImage image = TensorImage.fromBitmap(bitmap) ;
         // Imposto l'object detector creando prima le opzioni e poi passandole all'object detector
-        ObjectDetector.ObjectDetectorOptions options = ObjectDetector.ObjectDetectorOptions.builder().setMaxResults(5).setScoreThreshold(0.5f).build() ;
+        ObjectDetector.ObjectDetectorOptions options = ObjectDetector.ObjectDetectorOptions.builder().setMaxResults(10).setScoreThreshold(0.6f).build() ;
         ObjectDetector detector = ObjectDetector.createFromFileAndOptions(this, "banconote_pascal3.tflite",options) ;
         // Do l'immagine in pasto al detector e recupero i risultati
         List<Detection> results = detector.detect(image);
-
-        /*val resultToDisplay = results.map {
-            // Get the top-1 category and craft the display text
-            val category = it.categories.first()
-            val text = "${category.label}, ${category.score.times(100).toInt()}%"
-
-            // Create a data object to display the detection result
-            DetectionResult(it.boundingBox, text)
-        }*/
 
         for (Detection obj : results) {
             Category category = obj.getCategories().get(0);
             String text = ""+category.getLabel()+", "+ category.getScore()+"\n";
 
         }
-        //debugPrint(results); // solo per debug
+
         analyzeResults(results);
     }
 
-    private void debugPrint(List<Detection> results) {
-        for (Detection obj : results){
-            for (int j=0;j<obj.getCategories().size();j++) {
-                Category cat = obj.getCategories().get(j);
-                System.out.println("Label "+j+": "+cat.getLabel());
-                System.out.println("Banconota da "+tagliToString[j]);
-                int confidence = Math.round(cat.getScore());
-                System.out.println("Confidence "+confidence);
-            }
-        }
-    }
-
     private void analyzeResults(List<Detection> results) {
-        System.out.println("ANALYZE RESULTS");
         int[] banconoteTrovate =new int[5];
         somma = 0 ; // altrimenti aggiungo alle analisi di foto precedenti
         for (Detection obj : results) {
-            String label = obj.getCategories().get(0).getLabel(); // label = {5euro,10euro,20euro,50euro,100euro}
+            String label = obj.getCategories().get(0).getLabel();
             Double doubleVal = getBanknoteDoubleVal(label);
-            System.out.println("Val Double "+doubleVal);
             somma += doubleVal; // incremento la somma totale dei contanti mostrati nell'immagine
             int index = getBanknoteIndex(label);
             if(index!=-1)
