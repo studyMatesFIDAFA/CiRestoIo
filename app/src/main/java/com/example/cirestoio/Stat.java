@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.tensorflow.lite.support.image.TensorImage;
-import org.tensorflow.lite.support.label.Category;
 import org.tensorflow.lite.task.vision.detector.Detection;
 import org.tensorflow.lite.task.vision.detector.ObjectDetector;
 
@@ -18,7 +17,7 @@ import java.util.List;
 
 public class Stat extends AppCompatActivity implements View.OnClickListener  {
 
-    static  String tagliToString[]= {"5 €", "10 €", "20 €", "50 €", "100 €"};
+    static String[] tagliToString = {"5 €", "10 €", "20 €", "50 €", "100 €"};
     static int NUM_INDEX=5; // NUMERO DI TAGLI
 
     ImageView iv;
@@ -61,28 +60,28 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
     public void onClick(View view) {
         // Calcola resto
         String importoStr = importo.getText().toString();
-        double imp = 0;
+        String importoErrato = "Inserire un importo corretto";
+        double imp ;
         try {
             imp = Double.parseDouble(importoStr);
         }catch (Exception e) {
-            response.setText("Inserire un importo corretto");
+            response.setText(importoErrato);
             return ;
         }
         if (imp < 0){
-            response.setText("Inserire un importo corretto");
+            response.setText(importoErrato);
             return;
         }
 
-        String tot;
+        String result;
         if(somma > imp) {
-            tot=String.format("%.02f", somma-imp);
-            response.setText("Il resto ammonta a "+ tot + " €");
-        } else if (somma == imp){
-            response.setText("La somma fotografata coincide con l'importo da pagare");
+            result ="Il resto ammonta a "+ String.format("%.02f", somma-imp) + " €";
+        } else if (somma == imp) {
+           result = "La somma fotografata coincide con l'importo da pagare";
         } else {
-            tot=String.format("%.02f", imp-somma);
-            response.setText("Per raggiungere l'importo indicato mancano ancora  "+ tot+ " €");
+           result= "Per raggiungere l'importo indicato mancano ancora  "+ String.format("%.02f", imp-somma)+ " €";
         }
+        response.setText(result);
 
     }
 
@@ -129,12 +128,6 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
         // Do l'immagine in pasto al detector e recupero i risultati
         List<Detection> results = detector.detect(image);
 
-        for (Detection obj : results) {
-            Category category = obj.getCategories().get(0);
-            String text = ""+category.getLabel()+", "+ category.getScore()+"\n";
-
-        }
-
         analyzeResults(results);
     }
 
@@ -152,19 +145,23 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
                 System.out.println("----------------Errore index--------------------");
         }
         //Aggiorno i campi
-        numBanconote.setText(""+results.size());
-        sommaText.setText(""+String.format("%.02f",somma)+" €");
-        tagli.setText("");
+        String num = ""+results.size();
+        numBanconote.setText(num);
+        String s = ""+String.format("%.02f",somma)+" €";
+        sommaText.setText(s);
+
+        String lista = "";
         for (int i=0; i<NUM_INDEX; i++){
             if(banconoteTrovate[i]>0) {
                 if (banconoteTrovate[i] == 1)
-                    tagli.append("Trovata " + banconoteTrovate[i] + " banconota da " + tagliToString[i] + "\n");
+                    lista += "Trovata " + banconoteTrovate[i] + " banconota da " + tagliToString[i] + "\n";
                 else
-                    tagli.append("Trovate " + banconoteTrovate[i] + " banconote da " + tagliToString[i] + "\n");
+                    lista += "Trovate " + banconoteTrovate[i] + " banconote da " + tagliToString[i] + "\n";
             }
         }
-
-
+        tagli.setText(lista);
     }
 
+
 }
+
