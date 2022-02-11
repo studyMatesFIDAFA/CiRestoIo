@@ -3,9 +3,14 @@ package com.example.cirestoio;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.tensorflow.lite.support.image.TensorImage;
@@ -13,12 +18,16 @@ import org.tensorflow.lite.task.vision.detector.Detection;
 import org.tensorflow.lite.task.vision.detector.ObjectDetector;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Stat extends AppCompatActivity implements View.OnClickListener  {
-
-    static String[] tagliToString = {"5 €", "10 €", "20 €", "50 €", "100 €"};
-    static int NUM_INDEX=5; // NUMERO DI TAGLI
+public class Stat extends AppCompatActivity implements View.OnClickListener {
+    static final String API_URL = "https://tassidicambio.bancaditalia.it/terzevalute-wf-web/rest/v1.0/latestRates?lang={}";
+    static final String[] tagliToString = {"5 €", "10 €", "20 €", "50 €", "100 €"};
+    static final int NUM_INDEX=5; // NUMERO DI TAGLI
+    static Map<String,Double> countryRates = new HashMap<>();
 
     ImageView iv;
     Button calcola;
@@ -27,6 +36,9 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
     EditText importo;
     EditText sommaText;
     EditText response;
+    Spinner elencoValute; //da popolare (template in chat)
+    Button converti;
+    EditText conversion;
     double somma=0;
 
 
@@ -44,7 +56,26 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
         importo = findViewById(R.id.importo);
         response = findViewById(R.id.response);
         sommaText = findViewById(R.id.sommaText);
+        elencoValute = findViewById(R.id.valute);
+        converti = findViewById(R.id.converti);
+        conversion = findViewById(R.id.conversion);
+        converti.setOnClickListener(this);
         calcola.setOnClickListener(this);
+        elencoValute.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                String selectedCurrency = arg0.getItemAtPosition(arg2).toString();
+                Double eurRate = countryRates.get(selectedCurrency);
+                Double convertedValue = somma * eurRate;
+                conversion.setText(String.format("%.02f",convertedValue) + " " + selectedCurrency);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0)
+            {
+                conversion.setText("");
+            }
+        });
 
         // Set image on ImageView
         Bitmap captureImage = (Bitmap) getIntent().getExtras().get("img");
@@ -54,6 +85,18 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
         }catch (IOException e) {
             e.printStackTrace();
         }
+
+        new ApiRequest().execute(API_URL);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //TODO attenzione perche se ci mette un po a caricare la map è vuota-- da distemare
+
+        ArrayAdapter adapter= new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, new ArrayList<String>(countryRates.keySet()));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        elencoValute.setAdapter(adapter);
     }
 
     @Override
@@ -161,6 +204,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener  {
         }
         tagli.setText(lista);
     }
+
 
 
 }
