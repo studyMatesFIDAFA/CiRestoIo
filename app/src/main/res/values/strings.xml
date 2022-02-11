@@ -4,12 +4,13 @@
     <string name="img">ImageCapture</string>
     <string name="logo">Logo</string>
     <string name="foto">Apri fotocamera</string>
-    <string name="stat1">Banconote rilevate: </string>
-    <string name="stat2">Tagli rilevati: </string>
-    <string name="stat3">Inserire l\'importo da pagare: </string>
-    <string name="stat4">Importo rilevato: </string>
+    <string name="stat1"> Banconote rilevate: </string>
+    <string name="stat2"> Tagli rilevati: </string>
+    <string name="stat3"> Inserire l\'importo da pagare: </string>
+    <string name="stat4"> Importo rilevato: </string>
+    <string name="stat5"> Selezionare la valuta: </string>
     <string name="calcola">Calcola</string>
-    <string name="home">Torna alla home</string>
+    <string name="converti">Converti</string>
 
 
 </resources>
