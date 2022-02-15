@@ -16,9 +16,14 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int CAMERA_PERMISSION_REQUEST = 100;
+    static final String API_URL = "https://tassidicambio.bancaditalia.it/terzevalute-wf-web/rest/v1.0/latestRates?lang={}";
+    static Map<String,Double> countryRates = new HashMap<>();
     Button openCamera;
 
     ActivityResultLauncher<Intent> startForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -42,6 +47,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         obtainPermission(this);
 
         openCamera.setOnClickListener(this);
+
+        new ApiRequest().execute(API_URL);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 

@@ -24,10 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Stat extends AppCompatActivity implements View.OnClickListener {
-    static final String API_URL = "https://tassidicambio.bancaditalia.it/terzevalute-wf-web/rest/v1.0/latestRates?lang={}";
     static final String[] tagliToString = {"5 €", "10 €", "20 €", "50 €", "100 €"};
     static final int NUM_INDEX=5; // NUMERO DI TAGLI
-    static Map<String,Double> countryRates = new HashMap<>();
 
     ImageView iv;
     Button calcola;
@@ -66,7 +64,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 String selectedCurrency = arg0.getItemAtPosition(arg2).toString();
-                Double eurRate = countryRates.get(selectedCurrency);
+                Double eurRate = MainActivity.countryRates.get(selectedCurrency);
                 Double convertedValue = somma * eurRate;
                 conversion.setText(String.format("%.02f",convertedValue) + " " + selectedCurrency);
             }
@@ -82,19 +80,11 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
         iv.setImageBitmap(captureImage);
         try {
             runObjectDetection(captureImage);
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        new ApiRequest().execute(API_URL);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        //TODO attenzione perche se ci mette un po a caricare la map è vuota-- da distemare
-
-        ArrayAdapter adapter= new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, new ArrayList<String>(countryRates.keySet()));
+        ArrayAdapter adapter= new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, new ArrayList<String>(MainActivity.countryRates.keySet()));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         elencoValute.setAdapter(adapter);
     }

@@ -65,7 +65,7 @@ public class ApiRequest extends AsyncTask<String, Void, String> {
                 // es ValDollaro = valEuro * eurRate
                 Double eurRate = array.getJSONObject(i).getDouble("eurRate");
                 if (Arrays.asList(supportedCurrencies).contains(currency)){
-                    Stat.countryRates.put(currency,eurRate);
+                    MainActivity.countryRates.put(currency,eurRate);
                     rates[i]=""+currency + " --> "+eurRate;
                     System.out.println(rates[i]);
                 }
