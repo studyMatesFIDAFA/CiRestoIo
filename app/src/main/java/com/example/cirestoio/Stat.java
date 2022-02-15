@@ -34,8 +34,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
     EditText importo;
     EditText sommaText;
     EditText response;
-    Spinner elencoValute; //da popolare (template in chat)
-    Button converti;
+    Spinner elencoValute;
     EditText conversion;
     double somma=0;
 
@@ -55,9 +54,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
         response = findViewById(R.id.response);
         sommaText = findViewById(R.id.sommaText);
         elencoValute = findViewById(R.id.valute);
-        converti = findViewById(R.id.converti);
         conversion = findViewById(R.id.conversion);
-        converti.setOnClickListener(this);
         calcola.setOnClickListener(this);
         elencoValute.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
@@ -84,7 +81,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
             e.printStackTrace();
         }
 
-        ArrayAdapter adapter= new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, new ArrayList<String>(MainActivity.countryRates.keySet()));
+        ArrayAdapter adapter= new ArrayAdapter<String>(this,R.layout.selcted_item, new ArrayList<String>(MainActivity.countryRates.keySet()));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         elencoValute.setAdapter(adapter);
     }

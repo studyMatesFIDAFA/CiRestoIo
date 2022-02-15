@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 public class ApiRequest extends AsyncTask<String, Void, String> {
 
-    final String[] supportedCurrencies = {"Dollaro USA","Sterlina Gran Bretagna","Yen Giapponese","Renminbi (Yuan)","Rupia Indiana","Franco Svizzero"};
+    final String[] supportedCurrencies = {"Dollaro USA","Sterlina Gran Bretagna","Yen Giapponese","Renminbi(Yuan)","Rupia Indiana","Franco Svizzero"};
 
     @Override
     protected String doInBackground(String... url) {
