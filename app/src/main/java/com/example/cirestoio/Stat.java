@@ -154,9 +154,12 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
         TensorImage image = TensorImage.fromBitmap(bitmap) ;
         // Imposto l'object detector creando prima le opzioni e poi passandole all'object detector
         ObjectDetector.ObjectDetectorOptions options = ObjectDetector.ObjectDetectorOptions.builder().setMaxResults(10).setScoreThreshold(0.6f).build() ;
-        ObjectDetector detector = ObjectDetector.createFromFileAndOptions(this, "banconote_pascal3.tflite",options) ;
+        ObjectDetector detector = ObjectDetector.createFromFileAndOptions(this, "banconote3.tflite",options) ;
         // Do l'immagine in pasto al detector e recupero i risultati
+        long time0 = System.currentTimeMillis();
         List<Detection> results = detector.detect(image);
+        long time1 = System.currentTimeMillis();
+        System.out.println("TEMPO INFERENZA: "+(time1-time0));
 
         analyzeResults(results);
     }

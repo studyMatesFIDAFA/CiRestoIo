@@ -22,8 +22,7 @@ public class ApiRequest extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... url) {
-        //url="https://tassidicambio.bancaditalia.it/terzevalute-wf-web/rest/v1.0/latestRates?lang={}";
-        System.out.println("URL ricevuto "+url[0]);
+
         URL paginaURL;
         InputStream risposta = null;
         try {
@@ -32,17 +31,13 @@ public class ApiRequest extends AsyncTask<String, Void, String> {
             client.setRequestMethod("GET");
             client.setRequestProperty("Accept", "application/json");
             int responseCode = client.getResponseCode();
-            System.out.println("GET Response Code :: " + responseCode);
-            System.out.println(client.getRequestProperty("Accept"));
+            //System.out.println("GET Response Code :: " + responseCode);
+            //System.out.println(client.getRequestProperty("Accept"));
             risposta = new BufferedInputStream(client.getInputStream());
         }catch (Exception e) {
             e.printStackTrace();
         }
-        if(risposta!=null) {
-            System.out.println("ALGISE C'E'\n");
-        } else {
-            System.out.println("ALGISE SVEGLIATI\n");
-        }
+
          loadRates(risposta);
         return "";
     }
@@ -66,8 +61,8 @@ public class ApiRequest extends AsyncTask<String, Void, String> {
                 Double eurRate = array.getJSONObject(i).getDouble("eurRate");
                 if (Arrays.asList(supportedCurrencies).contains(currency)){
                     MainActivity.countryRates.put(currency,eurRate);
-                    rates[i]=""+currency + " --> "+eurRate;
-                    System.out.println(rates[i]);
+                    //rates[i]=""+currency + " --> "+eurRate;
+                    //System.out.println(rates[i]);
                 }
             }
         } catch (IOException | JSONException e) {
