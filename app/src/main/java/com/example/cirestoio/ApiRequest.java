@@ -53,21 +53,29 @@ public class ApiRequest extends AsyncTask<String, Void, String> {
             JSONObject object = new JSONObject(reader.readLine());
             JSONArray array=object.getJSONArray("latestRates");
             rates=new String[array.length()];
+            Double eurRate;
+
             for(int i=0;i<array.length();i++)
             {
                 String currency=array.getJSONObject(i).getString("currency");
+                //System.out.println(i+" "+currency);
                 // EurRate : quantita di valuta estera per un euro
                 // es ValDollaro = valEuro * eurRate
-                Double eurRate = array.getJSONObject(i).getDouble("eurRate");
+                if(!(array.getJSONObject(i).getString("eurRate").equals("N.D.")))
+                    eurRate = array.getJSONObject(i).getDouble("eurRate");
+                else
+                    eurRate = 0.0;
                 if (Arrays.asList(supportedCurrencies).contains(currency)){
                     MainActivity.countryRates.put(currency,eurRate);
                     //rates[i]=""+currency + " --> "+eurRate;
-                    //System.out.println(rates[i]);
+
                 }
             }
         } catch (IOException | JSONException e) {
+            System.out.println("FINE1");
             e.printStackTrace();
         }
+        //System.out.println("FINE");
         return;
     }
 
