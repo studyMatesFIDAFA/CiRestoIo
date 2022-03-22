@@ -25,7 +25,7 @@ import java.util.Locale;
 
 import android.speech.tts.TextToSpeech;
 
-public class Stat extends AppCompatActivity implements View.OnClickListener {
+public class Stat extends AppCompatActivity {
     static final String[] tagliToString = {"5 €", "10 €", "20 €", "50 €", "100 €"};
     static final int NUM_INDEX=5; // NUMERO DI TAGLI
 
@@ -50,15 +50,8 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stats);
 
-        // Text to Speech
-        ts=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status != TextToSpeech.ERROR) {
-                    ts.setLanguage(Locale.ITALY);
-                }
-            }
-        });
+        ts = MainActivity.textToSpeech;
+
 
 
         //BINDING
@@ -72,7 +65,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
         sommaText = findViewById(R.id.sommaText);
         elencoValute = findViewById(R.id.valute);
         conversion = findViewById(R.id.conversion);
-        calcola.setOnClickListener(this);
+        calcola.setOnClickListener(new CalcolaListener(this));
         ripeti.setOnClickListener(new RepeatListener(this));
 
         elencoValute.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
@@ -84,6 +77,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
                 Double convertedValue = somma * eurRate;
                 CharSequence result = String.format("%.02f",convertedValue) + " " + selectedCurrency;
                 conversion.setText(result.toString());
+                System.out.println("ALGISE: "+numProcessamenti);
                 if(numProcessamenti > 1)
                     ts.speak(result,TextToSpeech.QUEUE_ADD, null,"conversione");
                 else {
@@ -115,7 +109,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
         elencoValute.setAdapter(adapter);
 
     }
-
+    /*
     @Override
     public void onClick(View view) {
         // Calcola resto
@@ -147,7 +141,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
         ts.speak(result,TextToSpeech.QUEUE_ADD, null,"resto");
 
     }
-
+    */
 
     protected void runObjectDetection(Bitmap bitmap) throws  IOException {
         //Converte l'immagine da Bitmap a TensorImage

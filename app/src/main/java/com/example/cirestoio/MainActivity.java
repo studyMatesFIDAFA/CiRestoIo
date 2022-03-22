@@ -13,10 +13,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.Button;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     static final String API_URL = "https://tassidicambio.bancaditalia.it/terzevalute-wf-web/rest/v1.0/latestRates?lang={}";
     static Map<String,Double> countryRates = new HashMap<>();
     Button openCamera;
+    public static TextToSpeech textToSpeech;
 
     ActivityResultLauncher<Intent> startForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result != null && result.getResultCode() == RESULT_OK  && result.getData() != null) {
@@ -47,6 +50,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         obtainPermission(this);
 
         openCamera.setOnClickListener(this);
+
+        // Text to Speech
+        textToSpeech=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    textToSpeech.setLanguage(Locale.ITALY);
+                }
+            }
+        });
 
         new ApiRequest().execute(API_URL);
         try {
