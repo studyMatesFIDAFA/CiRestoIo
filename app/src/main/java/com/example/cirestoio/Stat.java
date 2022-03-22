@@ -2,6 +2,8 @@ package com.example.cirestoio;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -9,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,9 +20,10 @@ import org.tensorflow.lite.task.vision.detector.ObjectDetector;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
+
+import android.speech.tts.TextToSpeech;
 
 public class Stat extends AppCompatActivity implements View.OnClickListener {
     static final String[] tagliToString = {"5 €", "10 €", "20 €", "50 €", "100 €"};
@@ -36,7 +38,10 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
     EditText response;
     Spinner elencoValute;
     EditText conversion;
+    TextToSpeech ts;
     double somma=0;
+    int numProcessamenti = 1;
+    CharSequence num, s, lista;
 
 
 
@@ -44,6 +49,16 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stats);
+
+        // Text to Speech
+        ts=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    ts.setLanguage(Locale.ITALY);
+                }
+            }
+        });
 
         //BINDING
         iv = findViewById(R.id.imageView);
@@ -63,7 +78,16 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
                 String selectedCurrency = arg0.getItemAtPosition(arg2).toString();
                 Double eurRate = MainActivity.countryRates.get(selectedCurrency);
                 Double convertedValue = somma * eurRate;
-                conversion.setText(String.format("%.02f",convertedValue) + " " + selectedCurrency);
+                CharSequence result = String.format("%.02f",convertedValue) + " " + selectedCurrency;
+                conversion.setText(result.toString());
+                if(numProcessamenti > 1)
+                    ts.speak(result,TextToSpeech.QUEUE_ADD, null,"conversione");
+                else {
+                    ts.speak("L'importo totale è "+s,TextToSpeech.QUEUE_ADD, null,"totale");
+                    ts.speak("Sono state rilevate "+num+" banconote",TextToSpeech.QUEUE_ADD, null,"numero");
+                    ts.speak(lista,TextToSpeech.QUEUE_ADD, null,"lista");
+                }
+                numProcessamenti++;
             }
             @Override
             public void onNothingSelected(AdapterView<?> arg0)
@@ -71,6 +95,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
                 conversion.setText("");
             }
         });
+
 
         // Set image on ImageView
         Bitmap captureImage = (Bitmap) getIntent().getExtras().get("img");
@@ -84,6 +109,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
         ArrayAdapter adapter= new ArrayAdapter<String>(this,R.layout.selcted_item, new ArrayList<String>(MainActivity.countryRates.keySet()));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         elencoValute.setAdapter(adapter);
+
     }
 
     @Override
@@ -103,7 +129,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
             return;
         }
 
-        String result;
+        CharSequence result;
         if(somma > imp) {
             result ="Il resto ammonta a "+ String.format("%.02f", somma-imp) + " €";
         } else if (somma == imp) {
@@ -111,7 +137,8 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
         } else {
            result= "Per raggiungere l'importo indicato mancano ancora  "+ String.format("%.02f", imp-somma)+ " €";
         }
-        response.setText(result);
+        response.setText(result.toString());
+        ts.speak(result,TextToSpeech.QUEUE_ADD, null,"resto");
 
     }
 
@@ -178,12 +205,13 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
                 System.out.println("----------------Errore index--------------------");
         }
         //Aggiorno i campi
-        String num = ""+results.size();
-        numBanconote.setText(num);
-        String s = ""+String.format("%.02f",somma)+" €";
-        sommaText.setText(s);
+        num = ""+results.size();
+        numBanconote.setText(num.toString());
+        s = String.format("%.02f",somma)+" €";
+        sommaText.setText(s.toString());
 
-        String lista = "";
+
+        lista = "";
         for (int i=0; i<NUM_INDEX; i++){
             if(banconoteTrovate[i]>0) {
                 if (banconoteTrovate[i] == 1)
@@ -192,7 +220,8 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
                     lista += "Trovate " + banconoteTrovate[i] + " banconote da " + tagliToString[i] + "\n";
             }
         }
-        tagli.setText(lista);
+        tagli.setText(lista.toString());
+
     }
 
 
