@@ -31,6 +31,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
 
     ImageView iv;
     Button calcola;
+    Button ripeti;
     EditText numBanconote;
     EditText tagli;
     EditText importo;
@@ -42,8 +43,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
     double somma=0;
     int numProcessamenti = 1;
     CharSequence num, s, lista;
-
-
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +63,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
         //BINDING
         iv = findViewById(R.id.imageView);
         calcola = findViewById(R.id.CalcolaResto);
+        ripeti = findViewById(R.id.ripeti);
         numBanconote = findViewById(R.id.numBanconote);
         tagli = findViewById(R.id.listaTagli);
         importo = findViewById(R.id.importo);
@@ -71,6 +72,8 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
         elencoValute = findViewById(R.id.valute);
         conversion = findViewById(R.id.conversion);
         calcola.setOnClickListener(this);
+        ripeti.setOnClickListener(new RepeatListener(this));
+
         elencoValute.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
@@ -224,7 +227,72 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
 
     }
 
+    public static String[] getTagliToString() {
+        return tagliToString;
+    }
 
+    public static int getNumIndex() {
+        return NUM_INDEX;
+    }
 
+    public ImageView getIv() {
+        return iv;
+    }
+
+    public Button getCalcola() {
+        return calcola;
+    }
+
+    public EditText getNumBanconote() {
+        return numBanconote;
+    }
+
+    public EditText getTagli() {
+        return tagli;
+    }
+
+    public EditText getImporto() {
+        return importo;
+    }
+
+    public EditText getSommaText() {
+        return sommaText;
+    }
+
+    public EditText getResponse() {
+        return response;
+    }
+
+    public Spinner getElencoValute() {
+        return elencoValute;
+    }
+
+    public EditText getConversion() {
+        return conversion;
+    }
+
+    public TextToSpeech getTs() {
+        return ts;
+    }
+
+    public double getSomma() {
+        return somma;
+    }
+
+    public int getNumProcessamenti() {
+        return numProcessamenti;
+    }
+
+    public CharSequence getNum() {
+        return num;
+    }
+
+    public CharSequence getS() {
+        return s;
+    }
+
+    public CharSequence getLista() {
+        return lista;
+    }
 }
 
