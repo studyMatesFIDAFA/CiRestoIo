@@ -68,31 +68,7 @@ public class Stat extends AppCompatActivity {
         calcola.setOnClickListener(new CalcolaListener(this));
         ripeti.setOnClickListener(new RepeatListener(this));
 
-        elencoValute.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                String selectedCurrency = arg0.getItemAtPosition(arg2).toString();
-                Double eurRate = MainActivity.countryRates.get(selectedCurrency);
-                Double convertedValue = somma * eurRate;
-                CharSequence result = String.format("%.02f",convertedValue) + " " + selectedCurrency;
-                conversion.setText(result.toString());
-                System.out.println("ALGISE: "+numProcessamenti);
-                if(numProcessamenti > 1)
-                    ts.speak(result,TextToSpeech.QUEUE_ADD, null,"conversione");
-                else {
-                    ts.speak("L'importo totale è "+s,TextToSpeech.QUEUE_ADD, null,"totale");
-                    ts.speak(Utils.getCorrectString(Integer.parseInt(num.toString())),TextToSpeech.QUEUE_ADD, null,"numero");
-                    ts.speak(Utils.getCorrectString(lista),TextToSpeech.QUEUE_ADD, null,"lista");
-                }
-                numProcessamenti++;
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0)
-            {
-                conversion.setText("");
-            }
-        });
+        elencoValute.setOnItemSelectedListener(new CurrencySelectionListener(this));
 
 
         // Set image on ImageView
@@ -109,39 +85,7 @@ public class Stat extends AppCompatActivity {
         elencoValute.setAdapter(adapter);
 
     }
-    /*
-    @Override
-    public void onClick(View view) {
-        // Calcola resto
-        String importoStr = importo.getText().toString();
-        CharSequence importoErrato = "Inserire un importo corretto";
-        double imp ;
-        try {
-            imp = Double.parseDouble(importoStr);
-        }catch (Exception e) {
-            response.setText(importoErrato);
-            ts.speak(importoErrato, TextToSpeech.QUEUE_ADD, null, "importo errato");
-            return ;
-        }
-        if (imp < 0){
-            response.setText(importoErrato);
-            ts.speak(importoErrato, TextToSpeech.QUEUE_ADD, null, "importo errato");
-            return;
-        }
 
-        CharSequence result;
-        if(somma > imp) {
-            result ="Il resto ammonta a "+ String.format("%.02f", somma-imp) + " €";
-        } else if (somma == imp) {
-           result = "La somma fotografata coincide con l'importo da pagare";
-        } else {
-           result= "Per raggiungere l'importo indicato mancano ancora  "+ String.format("%.02f", imp-somma)+ " €";
-        }
-        response.setText(result.toString());
-        ts.speak(result,TextToSpeech.QUEUE_ADD, null,"resto");
-
-    }
-    */
 
     protected void runObjectDetection(Bitmap bitmap) throws  IOException {
         //Converte l'immagine da Bitmap a TensorImage
@@ -245,6 +189,10 @@ public class Stat extends AppCompatActivity {
 
     public int getNumProcessamenti() {
         return numProcessamenti;
+    }
+
+    public void setNumProcessamenti(int numProcessamenti) {
+        this.numProcessamenti=numProcessamenti;
     }
 
     public CharSequence getNum() {

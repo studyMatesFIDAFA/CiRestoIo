@@ -22,6 +22,7 @@ public class CalcolaListener implements View.OnClickListener{
             imp = Double.parseDouble(importoStr);
         }catch (Exception e) {
             stat.getResponse().setText(importoErrato);
+            stat.getTs().speak(importoErrato, TextToSpeech.QUEUE_ADD, null, "importo errato");
             return ;
         }
         if (imp < 0){
