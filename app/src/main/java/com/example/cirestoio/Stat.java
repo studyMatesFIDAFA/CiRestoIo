@@ -120,7 +120,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View view) {
         // Calcola resto
         String importoStr = importo.getText().toString();
-        String importoErrato = "Inserire un importo corretto";
+        CharSequence importoErrato = "Inserire un importo corretto";
         double imp ;
         try {
             imp = Double.parseDouble(importoStr);
@@ -130,6 +130,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
         }
         if (imp < 0){
             response.setText(importoErrato);
+            ts.speak(importoErrato, TextToSpeech.QUEUE_ADD, null, "importo errato");
             return;
         }
 
