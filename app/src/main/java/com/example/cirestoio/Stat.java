@@ -2,10 +2,6 @@ package com.example.cirestoio;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,19 +10,12 @@ import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.tensorflow.lite.support.image.TensorImage;
-import org.tensorflow.lite.task.vision.detector.Detection;
-import org.tensorflow.lite.task.vision.detector.ObjectDetector;
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 import android.speech.tts.TextToSpeech;
 
 public class Stat extends AppCompatActivity {
-    static final String[] tagliToString = {"5 €", "10 €", "20 €", "50 €", "100 €"};
     static final int NUM_INDEX=5; // NUMERO DI TAGLI
 
     ImageView iv;
@@ -43,7 +32,8 @@ public class Stat extends AppCompatActivity {
     double somma=0;
     int numProcessamenti = 1;
     CharSequence num, s, lista;
-    
+    Detector d;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +41,6 @@ public class Stat extends AppCompatActivity {
         setContentView(R.layout.stats);
 
         ts = MainActivity.textToSpeech;
-
-
 
         //BINDING
         iv = findViewById(R.id.imageView);
@@ -75,7 +63,8 @@ public class Stat extends AppCompatActivity {
         Bitmap captureImage = (Bitmap) getIntent().getExtras().get("img");
         iv.setImageBitmap(captureImage);
         try {
-            runObjectDetection(captureImage);
+            d = new Detector(this);
+            d.detect(captureImage);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -84,59 +73,6 @@ public class Stat extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         elencoValute.setAdapter(adapter);
 
-    }
-
-
-    protected void runObjectDetection(Bitmap bitmap) throws  IOException {
-        //Converte l'immagine da Bitmap a TensorImage
-        TensorImage image = TensorImage.fromBitmap(bitmap) ;
-        // Imposto l'object detector creando prima le opzioni e poi passandole all'object detector
-        ObjectDetector.ObjectDetectorOptions options = ObjectDetector.ObjectDetectorOptions.builder().setMaxResults(10).setScoreThreshold(0.6f).build() ;
-        ObjectDetector detector = ObjectDetector.createFromFileAndOptions(this, "banconote3.tflite",options) ;
-        // Do l'immagine in pasto al detector e recupero i risultati
-        long time0 = System.currentTimeMillis();
-        List<Detection> results = detector.detect(image);
-        long time1 = System.currentTimeMillis();
-        System.out.println("TEMPO INFERENZA: "+(time1-time0));
-
-        analyzeResults(results);
-    }
-
-    private void analyzeResults(List<Detection> results) {
-        int[] banconoteTrovate =new int[5];
-        somma = 0 ; // altrimenti aggiungo alle analisi di foto precedenti
-        for (Detection obj : results) {
-            String label = obj.getCategories().get(0).getLabel();
-            Double doubleVal = Utils.getBanknoteDoubleVal(label);
-            somma += doubleVal; // incremento la somma totale dei contanti mostrati nell'immagine
-            int index = Utils.getBanknoteIndex(label);
-            if(index!=-1)
-                banconoteTrovate[index]++;  // incremento banconote trovate per quella label
-            else
-                System.out.println("----------------Errore index--------------------");
-        }
-        //Aggiorno i campi
-        num = ""+results.size();
-        numBanconote.setText(num.toString());
-        s = String.format("%.02f",somma)+" €";
-        sommaText.setText(s.toString());
-
-
-        lista = "";
-        for (int i=0; i<NUM_INDEX; i++){
-            if(banconoteTrovate[i]>0) {
-                if (banconoteTrovate[i] == 1)
-                    lista += "Trovata " + banconoteTrovate[i] + " banconota da " + tagliToString[i] + "\n";
-                else
-                    lista += "Trovate " + banconoteTrovate[i] + " banconote da " + tagliToString[i] + "\n";
-            }
-        }
-        tagli.setText(lista.toString());
-
-    }
-
-    public static String[] getTagliToString() {
-        return tagliToString;
     }
 
     public static int getNumIndex() {
@@ -191,16 +127,24 @@ public class Stat extends AppCompatActivity {
         return numProcessamenti;
     }
 
-    public void setNumProcessamenti(int numProcessamenti) {
-        this.numProcessamenti=numProcessamenti;
+    public void setNumProcessamenti( int numProcessamenti){
+        this.numProcessamenti = numProcessamenti;
     }
 
     public CharSequence getNum() {
         return num;
     }
 
+    public void setNum (CharSequence num ) {
+        this.num = num;
+    }
+
     public CharSequence getS() {
         return s;
+    }
+
+    public void setS (CharSequence s ) {
+        this.s = s;
     }
 
     public CharSequence getLista() {
