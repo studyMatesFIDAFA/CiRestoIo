@@ -150,5 +150,7 @@ public class Stat extends AppCompatActivity {
     public CharSequence getLista() {
         return lista;
     }
+
+    public void setLista( CharSequence lista ){ this.lista = lista ;}
 }
 

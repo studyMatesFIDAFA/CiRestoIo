@@ -62,6 +62,6 @@ public class Detector {
             }
         }
         stat.getTagli().setText(lista.toString());
-
+        stat.setLista(lista);
     }
 }
