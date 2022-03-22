@@ -46,10 +46,10 @@ public class Detector {
         }
         //Aggiorno i campi
         stat.setNum("" + results.size());
-        ;
         stat.getNumBanconote().setText(stat.getNum().toString());
         stat.setS(String.format("%.02f", somma) + " €");
         stat.getSommaText().setText(stat.getS().toString());
+        stat.setSomma(somma);
 
 
         CharSequence lista = "";

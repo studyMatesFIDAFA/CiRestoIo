@@ -123,6 +123,8 @@ public class Stat extends AppCompatActivity {
         return somma;
     }
 
+    public void setSomma ( double somma ) { this.somma = somma; }
+
     public int getNumProcessamenti() {
         return numProcessamenti;
     }
