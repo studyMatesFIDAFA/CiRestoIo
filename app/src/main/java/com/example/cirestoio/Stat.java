@@ -88,8 +88,8 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
                     ts.speak(result,TextToSpeech.QUEUE_ADD, null,"conversione");
                 else {
                     ts.speak("L'importo totale è "+s,TextToSpeech.QUEUE_ADD, null,"totale");
-                    ts.speak("Sono state rilevate "+num+" banconote",TextToSpeech.QUEUE_ADD, null,"numero");
-                    ts.speak(lista,TextToSpeech.QUEUE_ADD, null,"lista");
+                    ts.speak(Utils.getCorrectString(Integer.parseInt(num.toString())),TextToSpeech.QUEUE_ADD, null,"numero");
+                    ts.speak(Utils.getCorrectString(lista),TextToSpeech.QUEUE_ADD, null,"lista");
                 }
                 numProcessamenti++;
             }
@@ -126,6 +126,7 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
             imp = Double.parseDouble(importoStr);
         }catch (Exception e) {
             response.setText(importoErrato);
+            ts.speak(importoErrato, TextToSpeech.QUEUE_ADD, null, "importo errato");
             return ;
         }
         if (imp < 0){
@@ -147,39 +148,6 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
 
     }
 
-    private Double getBanknoteDoubleVal(String label) {
-        switch (label) {
-            case "5euro":
-                return 5.00;
-            case "10euro":
-                return 10.00;
-            case "20euro":
-                return 20.00;
-            case "50euro":
-                return 50.00;
-            case "100euro":
-                return 100.00;
-            default:
-                return 0.00;
-        }
-    }
-
-    private int getBanknoteIndex(String label) {
-        switch (label) {
-            case "5euro":
-                return 0;
-            case "10euro":
-                return 1;
-            case "20euro":
-                return 2;
-            case "50euro":
-                return 3;
-            case "100euro":
-                return 4;
-            default:
-                return -1;
-        }
-    }
 
     protected void runObjectDetection(Bitmap bitmap) throws  IOException {
         //Converte l'immagine da Bitmap a TensorImage
@@ -201,9 +169,9 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
         somma = 0 ; // altrimenti aggiungo alle analisi di foto precedenti
         for (Detection obj : results) {
             String label = obj.getCategories().get(0).getLabel();
-            Double doubleVal = getBanknoteDoubleVal(label);
+            Double doubleVal = Utils.getBanknoteDoubleVal(label);
             somma += doubleVal; // incremento la somma totale dei contanti mostrati nell'immagine
-            int index = getBanknoteIndex(label);
+            int index = Utils.getBanknoteIndex(label);
             if(index!=-1)
                 banconoteTrovate[index]++;  // incremento banconote trovate per quella label
             else

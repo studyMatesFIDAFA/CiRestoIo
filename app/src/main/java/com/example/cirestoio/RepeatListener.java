@@ -15,7 +15,7 @@ public class RepeatListener implements View.OnClickListener{
     public void onClick(View view) {
         TextToSpeech ts = stat.getTs();
         ts.speak("L'importo totale è "+stat.getS(),TextToSpeech.QUEUE_ADD, null,"totale");
-        ts.speak("Sono state rilevate "+stat.getNum()+" banconote",TextToSpeech.QUEUE_ADD, null,"numero");
-        ts.speak(stat.getLista(),TextToSpeech.QUEUE_ADD, null,"lista");
+        ts.speak(Utils.getCorrectString(Integer.parseInt(stat.getNum().toString())), TextToSpeech.QUEUE_ADD, null, "numero");
+        ts.speak(Utils.getCorrectString(stat.lista),TextToSpeech.QUEUE_ADD, null,"lista");
     }
 }
