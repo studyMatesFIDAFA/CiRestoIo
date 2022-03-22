@@ -60,7 +60,6 @@ public class Stat extends AppCompatActivity implements View.OnClickListener {
             }
         });
 
-
         //BINDING
         iv = findViewById(R.id.imageView);
         calcola = findViewById(R.id.CalcolaResto);
