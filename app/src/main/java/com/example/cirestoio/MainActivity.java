@@ -16,28 +16,20 @@ import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_REQUEST = 100;
     static final String API_URL = "https://tassidicambio.bancaditalia.it/terzevalute-wf-web/rest/v1.0/latestRates?lang={}";
     static Map<String,Double> countryRates = new HashMap<>();
     Button openCamera;
+    ImageView im;
     public static TextToSpeech textToSpeech;
-
-    ActivityResultLauncher<Intent> startForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result != null && result.getResultCode() == RESULT_OK  && result.getData() != null) {
-            //Get image capture
-            Bitmap captureImage = (Bitmap) result.getData().getExtras().get("data");
-            Intent intent = new Intent(MainActivity.this, Stat.class);
-            intent.putExtra("img", captureImage);
-            startActivity(intent);
-        }
-    });
 
 
     @Override
@@ -46,10 +38,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         openCamera = findViewById(R.id.openCamera);
+        im = findViewById(R.id.imageView2);
 
         obtainPermission(this);
 
-        openCamera.setOnClickListener(this);
+        openCamera.setOnClickListener(new OpenCameraListener(this));
+        im.setOnClickListener(new SpeechToTextClickListener(this));
 
         // Text to Speech
         textToSpeech=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -82,13 +76,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         // a questo punto anche i permessi per il microfono sono già stati concessi, per cui è possibile procedere ad operare
         return true;
-    }
-
-    @Override
-    public void onClick(View view) {
-        // Open camera
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startForResult.launch(takePictureIntent);
     }
 
 }
