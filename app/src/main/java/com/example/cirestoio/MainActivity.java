@@ -15,10 +15,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,12 +26,13 @@ import java.util.Locale;
 import java.util.Map;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements View.OnTouchListener{
     private static final int CAMERA_PERMISSION_REQUEST = 100;
     static final String API_URL = "https://tassidicambio.bancaditalia.it/terzevalute-wf-web/rest/v1.0/latestRates?lang={}";
     static Map<String,Double> countryRates = new HashMap<>();
     Button openCamera;
     ImageView im;
+    View view;
     public static TextToSpeech textToSpeech;
     private ActivityResultLauncher<Intent> startForResultOpenCamera, startForResultSpeechText;
 
@@ -52,11 +53,19 @@ public class MainActivity extends AppCompatActivity{
         im.setOnClickListener(new SpeechToTextClickListener(this));
         */
 
+
+
         this.startForResultSpeechText= registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result != null && result.getResultCode() == RESULT_OK  && result.getData() != null) {
                 //Ottengo le stringhe riconosciute dal speech to text
                 ArrayList<String> frasi_riconosciute = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                System.out.println("ALGISE "+frasi_riconosciute.get(0));
+                String comando = frasi_riconosciute.get(0);
+                System.out.println(comando);
+                if(comando.contains("fotocamera") || comando.contains("camera"))
+                    openCamera.callOnClick();
+                else {
+                    //Fai qualcos'altro
+                }
             }});
 
         this.startForResultOpenCamera= registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -98,6 +107,12 @@ public class MainActivity extends AppCompatActivity{
                         startForResultOpenCamera.launch(takePictureIntent);
                         break;
                     case R.id.imageView2:
+                        textToSpeech.speak("Clicca lo schermo e pronuncia fotocamera per aprire la camera",TextToSpeech.QUEUE_ADD, null,"comando iniziale");
+                        try {
+                            Thread.sleep(3500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
                         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
@@ -114,7 +129,9 @@ public class MainActivity extends AppCompatActivity{
 
         openCamera.setOnClickListener(gestore);
         im.setOnClickListener(gestore);
-
+        /*System.out.println(1);
+        textToSpeech.speak("Clicca lo schermo e pronuncia fotocamera per aprire la camera",TextToSpeech.QUEUE_ADD, null,"comando iniziale");
+        System.out.println(2);*/
     }
 
     private boolean obtainPermission(Activity activity) {
@@ -131,4 +148,18 @@ public class MainActivity extends AppCompatActivity{
         return true;
     }
 
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startForResultSpeechText.launch(intent);
+        } else {
+            System.out.println("Non supporto del speech to text");
+        }
+        return true;
+
+    }
 }
