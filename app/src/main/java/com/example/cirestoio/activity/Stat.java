@@ -63,7 +63,6 @@ public class Stat extends AppCompatActivity {
 
         elencoValute.setOnItemSelectedListener(new CurrencySelectionListener(this));
 
-
         // Set image on ImageView
         Bitmap captureImage = (Bitmap) getIntent().getExtras().get("img");
         iv.setImageBitmap(captureImage);

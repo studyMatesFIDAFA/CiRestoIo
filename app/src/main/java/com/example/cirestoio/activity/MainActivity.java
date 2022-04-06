@@ -16,19 +16,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.cirestoio.model.Valuta;
 import com.example.cirestoio.utils.Permission;
 import com.example.cirestoio.utils.ApiRequest;
 import com.example.cirestoio.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity  {
     static final String API_URL = "https://tassidicambio.bancaditalia.it/terzevalute-wf-web/rest/v1.0/latestRates?lang={}";
-    public static Map<String, Double> countryRates = new HashMap<>();
+    public static List<Valuta> countryRates = new ArrayList<Valuta>();
     Button openCamera;
     ImageView im;
     ConstraintLayout layout;
