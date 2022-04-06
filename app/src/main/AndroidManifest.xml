@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CiRestoIo">
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,8 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Stat"
-            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".activity.Stat"
+            android:parentActivityName=".activity.MainActivity"/>
     </application>
 
 </manifest>

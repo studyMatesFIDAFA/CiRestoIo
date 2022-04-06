@@ -1,4 +1,4 @@
-package com.example.cirestoio;
+package com.example.cirestoio.activity;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -15,6 +15,12 @@ import java.util.ArrayList;
 
 import android.speech.tts.TextToSpeech;
 
+import com.example.cirestoio.detection.Detector;
+import com.example.cirestoio.R;
+import com.example.cirestoio.listener.CalcolaListener;
+import com.example.cirestoio.listener.CurrencySelectionListener;
+import com.example.cirestoio.listener.RepeatListener;
+
 public class Stat extends AppCompatActivity {
     static final int NUM_INDEX=5; // NUMERO DI TAGLI
 
@@ -30,7 +36,6 @@ public class Stat extends AppCompatActivity {
     EditText conversion;
     TextToSpeech ts;
     double somma=0;
-    int numProcessamenti = 1;
     CharSequence num, s, lista;
     Detector d;
 
@@ -124,14 +129,6 @@ public class Stat extends AppCompatActivity {
     }
 
     public void setSomma ( double somma ) { this.somma = somma; }
-
-    public int getNumProcessamenti() {
-        return numProcessamenti;
-    }
-
-    public void setNumProcessamenti( int numProcessamenti){
-        this.numProcessamenti = numProcessamenti;
-    }
 
     public CharSequence getNum() {
         return num;

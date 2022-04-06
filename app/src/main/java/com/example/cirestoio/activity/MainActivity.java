@@ -1,26 +1,24 @@
-package com.example.cirestoio;
+package com.example.cirestoio.activity;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.example.cirestoio.utils.Permission;
+import com.example.cirestoio.utils.ApiRequest;
+import com.example.cirestoio.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,9 +27,8 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity  {
-    private static final int CAMERA_PERMISSION_REQUEST = 100;
     static final String API_URL = "https://tassidicambio.bancaditalia.it/terzevalute-wf-web/rest/v1.0/latestRates?lang={}";
-    static Map<String, Double> countryRates = new HashMap<>();
+    public static Map<String, Double> countryRates = new HashMap<>();
     Button openCamera;
     ImageView im;
     ConstraintLayout layout;
@@ -48,13 +45,7 @@ public class MainActivity extends AppCompatActivity  {
         im = findViewById(R.id.imageView2);
         layout = findViewById(R.id.layout);
 
-        obtainPermission(this);
-
-        /*
-        //Se si usano listener dedicati esplode
-        openCamera.setOnClickListener(new OpenCameraListener(this));
-        im.setOnClickListener(new SpeechToTextClickListener(this));
-        */
+        Permission.obtainPermission(this);
 
 
         this.startForResultSpeechText = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -63,10 +54,10 @@ public class MainActivity extends AppCompatActivity  {
                 ArrayList<String> frasi_riconosciute = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 String comando = frasi_riconosciute.get(0);
                 System.out.println(comando);
-                if (comando.contains("fotocamera") || comando.contains("camera"))
+                if (comando.contains("fotocamera"))
                     openCamera.callOnClick();
                 else {
-                    //Fai qualcos'altro
+                    textToSpeech.speak("Comando non riconosciuto", TextToSpeech.QUEUE_ADD, null, "comando iniziale");
                 }
             }
         });
@@ -128,17 +119,5 @@ public class MainActivity extends AppCompatActivity  {
         });
     }
 
-    private boolean obtainPermission(Activity activity) {
-        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            //i permessi per l'uso della camera non sono stati concessi, quindi bisogna richiederli
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
-        }
-        // a questo punto i permessi per la camera sono già stati concessi
-        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            //i permessi per l'uso del microfono non sono stati concessi, quindi bisogna richiederli
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.RECORD_AUDIO}, 1);
-        }
-        // a questo punto anche i permessi per il microfono sono già stati concessi, per cui è possibile procedere ad operare
-        return true;
-    }
+
 }

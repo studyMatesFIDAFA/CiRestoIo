@@ -1,4 +1,4 @@
-package com.example.cirestoio;
+package com.example.cirestoio.utils;
 
 public class Utils {
 

@@ -1,6 +1,8 @@
-package com.example.cirestoio;
+package com.example.cirestoio.utils;
 
 import android.os.AsyncTask;
+
+import com.example.cirestoio.activity.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,7 +13,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
