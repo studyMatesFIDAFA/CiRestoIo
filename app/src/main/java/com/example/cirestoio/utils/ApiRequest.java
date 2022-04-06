@@ -3,6 +3,7 @@ package com.example.cirestoio.utils;
 import android.os.AsyncTask;
 
 import com.example.cirestoio.activity.MainActivity;
+import com.example.cirestoio.model.Valuta;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,6 +60,7 @@ public class ApiRequest extends AsyncTask<String, Void, String> {
             for(int i=0;i<array.length();i++)
             {
                 String currency=array.getJSONObject(i).getString("currency");
+                String nazione = array.getJSONObject(i).getString("country");
                 //System.out.println(i+" "+currency);
                 // EurRate : quantita di valuta estera per un euro
                 // es ValDollaro = valEuro * eurRate
@@ -67,7 +69,7 @@ public class ApiRequest extends AsyncTask<String, Void, String> {
                 else
                     eurRate = 0.0;
                 if (Arrays.asList(supportedCurrencies).contains(currency)){
-                    MainActivity.countryRates.put(currency,eurRate);
+                    MainActivity.countryRates.add(new Valuta(nazione,currency,eurRate));
                     //rates[i]=""+currency + " --> "+eurRate;
 
                 }

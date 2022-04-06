@@ -20,6 +20,7 @@ import com.example.cirestoio.R;
 import com.example.cirestoio.listener.CalcolaListener;
 import com.example.cirestoio.listener.CurrencySelectionListener;
 import com.example.cirestoio.listener.RepeatListener;
+import com.example.cirestoio.model.Valuta;
 
 public class Stat extends AppCompatActivity {
     static final int NUM_INDEX=5; // NUMERO DI TAGLI
@@ -73,7 +74,12 @@ public class Stat extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        ArrayAdapter adapter= new ArrayAdapter<String>(this,R.layout.selcted_item, new ArrayList<String>(MainActivity.countryRates.keySet()));
+        ArrayList<String> listaValute = new ArrayList<>();
+        for(Valuta v : MainActivity.countryRates)
+        {
+            listaValute.add(v.getNome());
+        }
+        ArrayAdapter adapter= new ArrayAdapter<String>(this,R.layout.selcted_item, listaValute);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         elencoValute.setAdapter(adapter);
 
