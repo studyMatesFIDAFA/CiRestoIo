@@ -1,6 +1,7 @@
 package com.example.cirestoio.callback;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 
@@ -48,7 +49,7 @@ public class ComandoCallback extends AppCompatActivity implements ActivityResult
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
 
-                if (intent.resolveActivity(getPackageManager()) != null) {
+                if (intent.resolveActivity(this.stat.getPackageManager()) != null) {
                     startForResultResto.launch(intent);
                 } else {
                     System.out.println("Non supporto del speech to text");
@@ -61,7 +62,7 @@ public class ComandoCallback extends AppCompatActivity implements ActivityResult
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
 
-                if (intent.resolveActivity(getPackageManager()) != null) {
+                if (intent.resolveActivity(this.stat.getPackageManager()) != null) {
                     startForResultConverti.launch(intent);
                 } else {
                     System.out.println("Non supporto del speech to text");
