@@ -1,17 +1,23 @@
 package com.example.cirestoio.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.speech.tts.TextToSpeech;
 
@@ -39,12 +45,27 @@ public class Stat extends AppCompatActivity {
     double somma=0;
     CharSequence num, s, lista;
     Detector d;
+    private ActivityResultLauncher<Intent> startForResultSpeechText;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stats);
+
+        this.startForResultSpeechText = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result != null && result.getResultCode() == RESULT_OK && result.getData() != null) {
+                //Ottengo le stringhe riconosciute dal speech to text
+                ArrayList<String> frasi_riconosciute = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                String comando = frasi_riconosciute.get(0);
+                System.out.println(comando);
+                if (comando.contains("fotocamera"))
+                    ts.speak("Funziona!", TextToSpeech.QUEUE_ADD, null, "comando non trovato");
+                else {
+                    ts.speak("Comando non riconosciuto", TextToSpeech.QUEUE_ADD, null, "comando non trovato");
+                }
+            }
+        });
 
         ts = MainActivity.textToSpeech;
 
@@ -61,6 +82,20 @@ public class Stat extends AppCompatActivity {
         conversion = findViewById(R.id.conversion);
         calcola.setOnClickListener(new CalcolaListener(this));
         ripeti.setOnClickListener(new RepeatListener(this));
+        iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startForResultSpeechText.launch(intent);
+                } else {
+                    System.out.println("Non supporto del speech to text");
+                }
+            }
+        });
 
         elencoValute.setOnItemSelectedListener(new CurrencySelectionListener(this));
 
@@ -82,6 +117,7 @@ public class Stat extends AppCompatActivity {
         ArrayAdapter adapter= new ArrayAdapter<String>(this,R.layout.selcted_item, listaValute);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         elencoValute.setAdapter(adapter);
+
     }
 
     public static int getNumIndex() {

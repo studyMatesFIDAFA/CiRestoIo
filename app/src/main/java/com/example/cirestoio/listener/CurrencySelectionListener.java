@@ -40,6 +40,13 @@ public class CurrencySelectionListener implements AdapterView.OnItemSelectedList
             stat.getTs().speak("L'importo totale è "+stat.getS(),TextToSpeech.QUEUE_ADD, null,"totale");
             stat.getTs().speak(Utils.getCorrectString(Integer.parseInt(stat.getNum().toString())),TextToSpeech.QUEUE_ADD, null,"numero");
             stat.getTs().speak(Utils.getCorrectString(stat.getLista()),TextToSpeech.QUEUE_ADD, null,"lista");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            stat.getTs().speak("Clicca la parte alta dello schermo e pronuncia calcola per calcolare il resto  o converti per effettuare una conversione", TextToSpeech.QUEUE_ADD, null, "comando iniziale");
         }
         numProcessamenti++;
     }

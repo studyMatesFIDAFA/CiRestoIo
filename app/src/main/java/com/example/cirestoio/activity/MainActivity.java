@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity  {
                 if (comando.contains("fotocamera"))
                     openCamera.callOnClick();
                 else {
-                    textToSpeech.speak("Comando non riconosciuto", TextToSpeech.QUEUE_ADD, null, "comando iniziale");
+                    textToSpeech.speak("Comando non riconosciuto", TextToSpeech.QUEUE_ADD, null, "comando non trovato");
                 }
             }
         });
