@@ -82,7 +82,6 @@ public class Stat extends AppCompatActivity {
         ArrayAdapter adapter= new ArrayAdapter<String>(this,R.layout.selcted_item, listaValute);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         elencoValute.setAdapter(adapter);
-
     }
 
     public static int getNumIndex() {
