@@ -7,6 +7,7 @@ import android.speech.tts.TextToSpeech;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cirestoio.activity.MainActivity;
@@ -17,8 +18,10 @@ import java.util.Locale;
 
 public class ComandoCallback extends AppCompatActivity implements ActivityResultCallback  {
     public static final int RESULT_OK = -1;
-    private ActivityResultLauncher<Intent> startForResultResto;
-    private ActivityResultLauncher<Intent> startForResultConverti;
+    private ActivityResultLauncher<Intent> startForResultResto = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new RestoCallback());;
+    private ActivityResultLauncher<Intent> startForResultConverti = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ConvertiCallback());;
+
+
 
     @Override
     public void onActivityResult(Object res) {
@@ -57,6 +60,7 @@ public class ComandoCallback extends AppCompatActivity implements ActivityResult
             }
         }
     }
+
 
 
 }
