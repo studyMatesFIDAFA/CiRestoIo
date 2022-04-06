@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity  {
                 ArrayList<String> frasi_riconosciute = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 String comando = frasi_riconosciute.get(0);
                 System.out.println(comando);
-                if (comando.contains("fotocamera"))
+                if (comando.equalsIgnoreCase("fotocamera"))
                     openCamera.callOnClick();
                 else {
                     textToSpeech.speak("Comando non riconosciuto", TextToSpeech.QUEUE_ADD, null, "comando non trovato");

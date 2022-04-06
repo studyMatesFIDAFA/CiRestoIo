@@ -19,7 +19,6 @@ public class RestoCallback implements ActivityResultCallback {
     public void onActivityResult(Object res) {
         ActivityResult result = (ActivityResult) res;
         if (result != null && result.getResultCode() == RESULT_OK && result.getData() != null) {
-            //Ottengo le stringhe riconosciute dal speech to text
             ArrayList<String> frasi_riconosciute = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             String importo = frasi_riconosciute.get(0);
             System.out.println(importo);

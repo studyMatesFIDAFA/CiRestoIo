@@ -31,8 +31,10 @@ public class ComandoCallback extends AppCompatActivity implements ActivityResult
             ArrayList<String> frasi_riconosciute = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             String comando = frasi_riconosciute.get(0);
             System.out.println(comando);
-            if (comando.contains("resto"))
+            if (comando.equalsIgnoreCase("calcola"))
             {
+                MainActivity.textToSpeech.speak("Pronuncia l'importo da calcolare", TextToSpeech.QUEUE_ADD, null, "resto");
+
                 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
@@ -43,8 +45,9 @@ public class ComandoCallback extends AppCompatActivity implements ActivityResult
                     System.out.println("Non supporto del speech to text");
                 }
             }
-            else if (comando.contains("converti"))
+            else if (comando.equalsIgnoreCase("converti"))
             {
+                MainActivity.textToSpeech.speak("Pronuncia l'importo da calcolare", TextToSpeech.QUEUE_ADD, null, "resto");
                 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
