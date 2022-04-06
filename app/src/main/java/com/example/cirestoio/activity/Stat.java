@@ -54,7 +54,7 @@ public class Stat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stats);
 
-        this.startForResultSpeechText = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ComandoCallback());
+        this.startForResultSpeechText = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ComandoCallback(this));
 
         ts = MainActivity.textToSpeech;
 

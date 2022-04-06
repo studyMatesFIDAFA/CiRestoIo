@@ -11,15 +11,24 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cirestoio.activity.MainActivity;
+import com.example.cirestoio.activity.Stat;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 
 public class ComandoCallback extends AppCompatActivity implements ActivityResultCallback  {
+
+    private Stat stat;
+
+    public ComandoCallback(Stat stat)
+    {
+        this.stat = stat;
+    }
+
     public static final int RESULT_OK = -1;
     private ActivityResultLauncher<Intent> startForResultResto = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new RestoCallback());;
-    private ActivityResultLauncher<Intent> startForResultConverti = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ConvertiCallback());;
+    private ActivityResultLauncher<Intent> startForResultConverti = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ConvertiCallback(this.stat));;
 
 
 
