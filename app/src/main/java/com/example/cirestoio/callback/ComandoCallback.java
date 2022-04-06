@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 
-public class ComandoCallback extends AppCompatActivity implements ActivityResultCallback  {
+public class ComandoCallback implements ActivityResultCallback  {
 
     private Stat stat;
 

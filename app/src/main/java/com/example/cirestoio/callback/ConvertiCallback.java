@@ -39,6 +39,7 @@ public class ConvertiCallback implements ActivityResultCallback {
             {
                 if(valute.get(i).getNazione().equalsIgnoreCase(nazione))
                 {
+                    System.out.println("Trovato!");
                     trovato = true;
                     posizione = i;
                 }
