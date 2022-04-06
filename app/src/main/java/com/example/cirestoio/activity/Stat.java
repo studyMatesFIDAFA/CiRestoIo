@@ -22,6 +22,8 @@ import java.util.Locale;
 import android.speech.tts.TextToSpeech;
 
 import com.example.cirestoio.callback.ComandoCallback;
+import com.example.cirestoio.callback.ConvertiCallback;
+import com.example.cirestoio.callback.RestoCallback;
 import com.example.cirestoio.detection.Detector;
 import com.example.cirestoio.R;
 import com.example.cirestoio.listener.CalcolaListener;
@@ -47,6 +49,9 @@ public class Stat extends AppCompatActivity {
     CharSequence num, s, lista;
     Detector d;
     private ActivityResultLauncher<Intent> startForResultSpeechText;
+    private ActivityResultLauncher<Intent> startForResultResto = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new RestoCallback(this));;
+    private ActivityResultLauncher<Intent> startForResultConverti = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ConvertiCallback(this));;
+
 
 
     @Override
@@ -180,5 +185,36 @@ public class Stat extends AppCompatActivity {
     }
 
     public void setLista( CharSequence lista ){ this.lista = lista ;}
+
+    public void mic (int i){
+        if (i == 0){
+            MainActivity.textToSpeech.speak("Pronuncia l'importo da calcolare", TextToSpeech.QUEUE_ADD, null, "resto");
+
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startForResultResto.launch(intent);
+            } else {
+                System.out.println("Non supporto del speech to text");
+            }
+
+        }
+        else if (i == 1){
+            MainActivity.textToSpeech.speak("Pronuncia la valuta o la nazione da convertire", TextToSpeech.QUEUE_ADD, null, "resto");
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+
+            System.out.println(intent.getDataString()+" ciao");
+
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startForResultConverti.launch(intent);
+            } else {
+                System.out.println("Non supporto del speech to text");
+            }
+        }
+    }
 }
 

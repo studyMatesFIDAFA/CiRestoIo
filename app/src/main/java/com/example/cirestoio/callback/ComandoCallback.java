@@ -28,8 +28,8 @@ public class ComandoCallback extends AppCompatActivity implements ActivityResult
     }
 
     public static final int RESULT_OK = -1;
-    private ActivityResultLauncher<Intent> startForResultResto = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new RestoCallback());;
-    private ActivityResultLauncher<Intent> startForResultConverti = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ConvertiCallback(this.stat));;
+   // private ActivityResultLauncher<Intent> startForResultResto = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new RestoCallback(this.stat));;
+   // private ActivityResultLauncher<Intent> startForResultConverti = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ConvertiCallback(this.stat));;
 
 
 
@@ -43,7 +43,8 @@ public class ComandoCallback extends AppCompatActivity implements ActivityResult
             System.out.println(comando);
             if (comando.equalsIgnoreCase("calcola"))
             {
-                MainActivity.textToSpeech.speak("Pronuncia l'importo da calcolare", TextToSpeech.QUEUE_ADD, null, "resto");
+                this.stat.mic(0);
+                /*MainActivity.textToSpeech.speak("Pronuncia l'importo da calcolare", TextToSpeech.QUEUE_ADD, null, "resto");
 
                 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -53,20 +54,23 @@ public class ComandoCallback extends AppCompatActivity implements ActivityResult
                     startForResultResto.launch(intent);
                 } else {
                     System.out.println("Non supporto del speech to text");
-                }
+                }*/
             }
             else if (comando.equalsIgnoreCase("converti"))
             {
-                MainActivity.textToSpeech.speak("Pronuncia l'importo da calcolare", TextToSpeech.QUEUE_ADD, null, "resto");
+                this.stat.mic(1);
+                /*MainActivity.textToSpeech.speak("Pronuncia la valuta o la nazione da convertire", TextToSpeech.QUEUE_ADD, null, "resto");
                 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+
+                System.out.println(intent.getDataString()+" ciao");
 
                 if (intent.resolveActivity(this.stat.getPackageManager()) != null) {
                     startForResultConverti.launch(intent);
                 } else {
                     System.out.println("Non supporto del speech to text");
-                }
+                }*/
             }
             else {
                 MainActivity.textToSpeech.speak("Comando non riconosciuto", TextToSpeech.QUEUE_ADD, null, "comando non trovato");
