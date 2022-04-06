@@ -6,6 +6,7 @@ import android.widget.AdapterView;
 
 import com.example.cirestoio.activity.MainActivity;
 import com.example.cirestoio.activity.Stat;
+import com.example.cirestoio.model.Valuta;
 import com.example.cirestoio.utils.Utils;
 
 public class CurrencySelectionListener implements AdapterView.OnItemSelectedListener {
@@ -23,8 +24,13 @@ public class CurrencySelectionListener implements AdapterView.OnItemSelectedList
 
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+        Valuta v = null;
         String selectedCurrency = arg0.getItemAtPosition(arg2).toString();
-        Double eurRate = MainActivity.countryRates.get(selectedCurrency);
+        for (Valuta val : MainActivity.countryRates){
+            if(val.getNome().equalsIgnoreCase(selectedCurrency))
+                v = val;
+        }
+        Double eurRate = v.getEurRate();
         Double convertedValue = stat.getSomma() * eurRate;
         CharSequence result = String.format("%.02f",convertedValue) + " " + selectedCurrency;
         stat.getConversion().setText(result.toString());
