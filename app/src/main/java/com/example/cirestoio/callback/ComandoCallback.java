@@ -1,19 +1,24 @@
 package com.example.cirestoio.callback;
 
+import android.content.Intent;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cirestoio.activity.MainActivity;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
-
-public class ComandoCallback implements ActivityResultCallback {
+public class ComandoCallback extends AppCompatActivity implements ActivityResultCallback  {
     public static final int RESULT_OK = -1;
+    private ActivityResultLauncher<Intent> startForResultResto;
+    private ActivityResultLauncher<Intent> startForResultConverti;
 
     @Override
     public void onActivityResult(Object res) {
@@ -25,15 +30,33 @@ public class ComandoCallback implements ActivityResultCallback {
             System.out.println(comando);
             if (comando.contains("resto"))
             {
+                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
 
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startForResultResto.launch(intent);
+                } else {
+                    System.out.println("Non supporto del speech to text");
+                }
             }
             else if (comando.contains("converti"))
             {
+                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
 
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startForResultConverti.launch(intent);
+                } else {
+                    System.out.println("Non supporto del speech to text");
+                }
             }
             else {
                 MainActivity.textToSpeech.speak("Comando non riconosciuto", TextToSpeech.QUEUE_ADD, null, "comando non trovato");
             }
         }
     }
+
+
 }
