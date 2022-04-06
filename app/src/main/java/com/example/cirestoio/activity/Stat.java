@@ -59,8 +59,14 @@ public class Stat extends AppCompatActivity {
                 ArrayList<String> frasi_riconosciute = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 String comando = frasi_riconosciute.get(0);
                 System.out.println(comando);
-                if (comando.contains("fotocamera"))
-                    ts.speak("Funziona!", TextToSpeech.QUEUE_ADD, null, "comando non trovato");
+                if (comando.contains("resto"))
+                {
+
+                }
+                else if (comando.contains("converti"))
+                {
+
+                }
                 else {
                     ts.speak("Comando non riconosciuto", TextToSpeech.QUEUE_ADD, null, "comando non trovato");
                 }
