@@ -44,7 +44,7 @@ public class Valuta {
         return Objects.hash(nome, nazione, eurRate);
     }
 
-    public Valuta(String nome, String nazione, double eurRate) {
+    public Valuta(String nazione,String nome ,double eurRate) {
         this.nome = nome;
         this.nazione = nazione;
         this.eurRate = eurRate;
