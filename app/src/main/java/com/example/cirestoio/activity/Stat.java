@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import android.speech.tts.TextToSpeech;
 
+import com.example.cirestoio.callback.ComandoCallback;
 import com.example.cirestoio.detection.Detector;
 import com.example.cirestoio.R;
 import com.example.cirestoio.listener.CalcolaListener;
@@ -53,25 +54,7 @@ public class Stat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stats);
 
-        this.startForResultSpeechText = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result != null && result.getResultCode() == RESULT_OK && result.getData() != null) {
-                //Ottengo le stringhe riconosciute dal speech to text
-                ArrayList<String> frasi_riconosciute = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                String comando = frasi_riconosciute.get(0);
-                System.out.println(comando);
-                if (comando.contains("resto"))
-                {
-
-                }
-                else if (comando.contains("converti"))
-                {
-
-                }
-                else {
-                    ts.speak("Comando non riconosciuto", TextToSpeech.QUEUE_ADD, null, "comando non trovato");
-                }
-            }
-        });
+        this.startForResultSpeechText = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ComandoCallback());
 
         ts = MainActivity.textToSpeech;
 
