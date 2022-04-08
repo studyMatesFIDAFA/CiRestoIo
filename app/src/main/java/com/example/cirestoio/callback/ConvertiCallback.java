@@ -12,6 +12,7 @@ import com.example.cirestoio.model.Valuta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ConvertiCallback implements ActivityResultCallback {
 
@@ -29,15 +30,17 @@ public class ConvertiCallback implements ActivityResultCallback {
         if (result != null && result.getResultCode() == RESULT_OK && result.getData() != null) {
             //Ottengo le stringhe riconosciute dal speech to text
             ArrayList<String> frasi_riconosciute = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            String nazione = frasi_riconosciute.get(0);
-            System.out.println(nazione);
+            String nazioneOrNome = frasi_riconosciute.get(0);
+            System.out.println(nazioneOrNome);
 
             List<Valuta> valute = MainActivity.countryRates;
             boolean trovato = false;
             int posizione = -1;
             for(int i=0; i<valute.size() && !trovato; i++)
             {
-                if(valute.get(i).getNazione().equalsIgnoreCase(nazione))
+                Valuta v = valute.get(i);
+                if(v.getNazione().equalsIgnoreCase(nazioneOrNome) || v.getNazione().toLowerCase(Locale.ROOT).contains(nazioneOrNome.toLowerCase(Locale.ROOT)) ||
+                        v.getNome().equalsIgnoreCase(nazioneOrNome) || v.getNome().toLowerCase(Locale.ROOT).contains(nazioneOrNome.toLowerCase(Locale.ROOT)))
                 {
                     System.out.println("Trovato!");
                     trovato = true;
@@ -50,7 +53,7 @@ public class ConvertiCallback implements ActivityResultCallback {
             }
             else
             {
-                MainActivity.textToSpeech.speak("Nazione non riconosciuta", TextToSpeech.QUEUE_ADD, null, "Nazione non trovata");
+                MainActivity.textToSpeech.speak("Nazione o valuta non riconosciuta", TextToSpeech.QUEUE_ADD, null, "Nazione non trovata");
             }
         }
     }
