@@ -31,7 +31,6 @@ public class ConvertiCallback implements ActivityResultCallback {
             //Ottengo le stringhe riconosciute dal speech to text
             ArrayList<String> frasi_riconosciute = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             String nazioneOrNome = frasi_riconosciute.get(0);
-            System.out.println(nazioneOrNome);
 
             List<Valuta> valute = MainActivity.countryRates;
             boolean trovato = false;
@@ -42,7 +41,6 @@ public class ConvertiCallback implements ActivityResultCallback {
                 if(v.getNazione().equalsIgnoreCase(nazioneOrNome) || v.getNazione().toLowerCase(Locale.ROOT).contains(nazioneOrNome.toLowerCase(Locale.ROOT)) ||
                         v.getNome().equalsIgnoreCase(nazioneOrNome) || v.getNome().toLowerCase(Locale.ROOT).contains(nazioneOrNome.toLowerCase(Locale.ROOT)))
                 {
-                    System.out.println("Trovato!");
                     trovato = true;
                     posizione = i;
                 }

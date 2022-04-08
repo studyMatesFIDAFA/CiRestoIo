@@ -27,10 +27,10 @@ public class Detector {
         ObjectDetector.ObjectDetectorOptions options = ObjectDetector.ObjectDetectorOptions.builder().setMaxResults(10).setScoreThreshold(0.6f).build();
         ObjectDetector detector = ObjectDetector.createFromFileAndOptions(stat, "banconote3.tflite", options);
         // Do l'immagine in pasto al detector e recupero i risultati
-        long time0 = System.currentTimeMillis();
+        //long time0 = System.currentTimeMillis();
         List<Detection> results = detector.detect(image);
-        long time1 = System.currentTimeMillis();
-        System.out.println("TEMPO INFERENZA: " + (time1 - time0));
+        //long time1 = System.currentTimeMillis();
+       // System.out.println("TEMPO INFERENZA: " + (time1 - time0));
         analyzeResults(results);
     }
 

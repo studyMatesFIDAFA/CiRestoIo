@@ -49,8 +49,8 @@ public class Stat extends AppCompatActivity {
     CharSequence num, s, lista;
     Detector d;
     private ActivityResultLauncher<Intent> startForResultSpeechText;
-    private ActivityResultLauncher<Intent> startForResultResto = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new RestoCallback(this));;
-    private ActivityResultLauncher<Intent> startForResultConverti = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ConvertiCallback(this));;
+    private ActivityResultLauncher<Intent> startForResultResto = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new RestoCallback(this));
+    private ActivityResultLauncher<Intent> startForResultConverti = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ConvertiCallback(this));
 
 
 

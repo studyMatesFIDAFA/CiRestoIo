@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity  {
                 //Ottengo le stringhe riconosciute dal speech to text
                 ArrayList<String> frasi_riconosciute = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 String comando = frasi_riconosciute.get(0);
-                System.out.println(comando);
                 if (comando.equalsIgnoreCase("fotocamera"))
                     openCamera.callOnClick();
                 else {
@@ -84,11 +83,11 @@ public class MainActivity extends AppCompatActivity  {
         });
 
         new ApiRequest().execute(API_URL);
-        try {
+       /* try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
         // Listener bottone
         openCamera.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +95,7 @@ public class MainActivity extends AppCompatActivity  {
                 // Open camera
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startForResultOpenCamera.launch(takePictureIntent);
-            };
+            }
         });
 
 

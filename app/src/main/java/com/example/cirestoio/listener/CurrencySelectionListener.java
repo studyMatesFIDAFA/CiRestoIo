@@ -30,8 +30,8 @@ public class CurrencySelectionListener implements AdapterView.OnItemSelectedList
             if(val.getNome().equalsIgnoreCase(selectedCurrency))
                 v = val;
         }
-        Double eurRate = v.getEurRate();
-        Double convertedValue = stat.getSomma() * eurRate;
+        double eurRate = v.getEurRate();
+        double convertedValue = stat.getSomma() * eurRate;
         CharSequence result = String.format("%.02f",convertedValue) + " " + selectedCurrency;
         stat.getConversion().setText(result.toString());
         if(numProcessamenti > 1)

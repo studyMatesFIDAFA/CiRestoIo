@@ -32,7 +32,6 @@ public class CalcolaListener implements View.OnClickListener{
             stat.getTs().speak(importoErrato, TextToSpeech.QUEUE_ADD, null, "importo errato");
             return;
         }
-        System.out.println(imp+ " " + stat.getSomma());
         CharSequence result;
         if(stat.getSomma() > imp) {
             result ="Il resto ammonta a "+ String.format("%.02f", stat.getSomma()-imp) + " €";

@@ -32,9 +32,7 @@ public class ApiRequest extends AsyncTask<String, Void, String> {
             HttpURLConnection client = (HttpURLConnection) paginaURL.openConnection();
             client.setRequestMethod("GET");
             client.setRequestProperty("Accept", "application/json");
-            int responseCode = client.getResponseCode();
-            //System.out.println("GET Response Code :: " + responseCode);
-            //System.out.println(client.getRequestProperty("Accept"));
+            //int responseCode = client.getResponseCode();
             risposta = new BufferedInputStream(client.getInputStream());
         }catch (Exception e) {
             e.printStackTrace();
@@ -45,23 +43,16 @@ public class ApiRequest extends AsyncTask<String, Void, String> {
     }
 
     private void loadRates(InputStream in) {
-        String[] rates=null; //risultati
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
-            /*while((s=reader.readLine())!=null)
-            {
-                sb.append(s);
-                System.out.println("Stringa s "+s);
-            }*/
+
             JSONObject object = new JSONObject(reader.readLine());
             JSONArray array=object.getJSONArray("latestRates");
-            rates=new String[array.length()];
-            Double eurRate;
+            double eurRate;
 
             for(int i=0;i<array.length();i++)
             {
                 String currency=array.getJSONObject(i).getString("currency");
                 String nazione = array.getJSONObject(i).getString("country");
-                //System.out.println(i+" "+currency);
                 // EurRate : quantita di valuta estera per un euro
                 // es ValDollaro = valEuro * eurRate
                 if(!(array.getJSONObject(i).getString("eurRate").equals("N.D.")))
@@ -70,15 +61,12 @@ public class ApiRequest extends AsyncTask<String, Void, String> {
                     eurRate = 0.0;
                 if (Arrays.asList(supportedCurrencies).contains(currency)){
                     MainActivity.countryRates.add(new Valuta(nazione,currency,eurRate));
-                    //rates[i]=""+currency + " --> "+eurRate;
 
                 }
             }
         } catch (IOException | JSONException e) {
-            System.out.println("FINE1");
             e.printStackTrace();
         }
-        //System.out.println("FINE");
         return;
     }
 
