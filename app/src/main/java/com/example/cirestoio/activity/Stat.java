@@ -207,8 +207,6 @@ public class Stat extends AppCompatActivity {
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
 
-            System.out.println(intent.getDataString()+" ciao");
-
             if (intent.resolveActivity(getPackageManager()) != null) {
                 startForResultConverti.launch(intent);
             } else {
