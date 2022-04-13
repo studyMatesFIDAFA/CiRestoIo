@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.speech.tts.UtteranceProgressListener;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -189,6 +190,7 @@ public class Stat extends AppCompatActivity {
     public void mic (int i){
         if (i == 0){
             MainActivity.textToSpeech.speak("Pronuncia l'importo da calcolare", TextToSpeech.QUEUE_ADD, null, "resto");
+
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
