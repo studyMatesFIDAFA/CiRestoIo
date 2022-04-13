@@ -50,7 +50,7 @@ public class Utils {
     }
 
     public static CharSequence getCorrectString(CharSequence str) {
-        return str.toString().replaceAll("1", "una");
+        return str.toString().replaceAll("\\s1\\s", "una");
     }
 
 }
