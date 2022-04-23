@@ -25,7 +25,7 @@ public class Detector {
         TensorImage image = TensorImage.fromBitmap(bitmap);
         // Imposto l'object detector creando prima le opzioni e poi passandole all'object detector
         ObjectDetector.ObjectDetectorOptions options = ObjectDetector.ObjectDetectorOptions.builder().setMaxResults(10).setScoreThreshold(0.6f).build();
-        ObjectDetector detector = ObjectDetector.createFromFileAndOptions(stat, "banconote3.tflite", options);
+        ObjectDetector detector = ObjectDetector.createFromFileAndOptions(stat, "banconote.tflite", options);
         // Do l'immagine in pasto al detector e recupero i risultati
         //long time0 = System.currentTimeMillis();
         List<Detection> results = detector.detect(image);
