@@ -46,7 +46,7 @@ public class CurrencySelectionListener implements AdapterView.OnItemSelectedList
                 e.printStackTrace();
             }
 
-            stat.getTs().speak("Clicca la parte alta dello schermo e pronuncia calcola per calcolare il resto  o converti per effettuare una conversione", TextToSpeech.QUEUE_ADD, null, "comando iniziale");
+            stat.getTs().speak("Clicca la parte alta dello schermo e pronuncia calcola per calcolare il resto, o converti per effettuare una conversione", TextToSpeech.QUEUE_ADD, null, "comando iniziale");
         }
         numProcessamenti++;
     }
